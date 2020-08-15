@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "KmxyEOzVhzXSxvVrG6tLno+ItzLrHBAOoEcPaOi1pPFL4w0ASm0sxNP0TEOYA0shrNvUm6MyjOVFSskKjMph7g==",
+  "success": true,
+  "projectFilePath": "/Users/Andres/Desktop/Projects/ezra/api/EzraTest.csproj",
+  "expectedPackageFiles": [
+    "/Users/Andres/.nuget/packages/microsoft.data.sqlite/3.1.6/microsoft.data.sqlite.3.1.6.nupkg.sha512",
+    "/Users/Andres/.nuget/packages/microsoft.data.sqlite.core/3.1.6/microsoft.data.sqlite.core.3.1.6.nupkg.sha512",
+    "/Users/Andres/.nuget/packages/sqlitepclraw.bundle_e_sqlite3/2.0.2/sqlitepclraw.bundle_e_sqlite3.2.0.2.nupkg.sha512",
+    "/Users/Andres/.nuget/packages/sqlitepclraw.core/2.0.2/sqlitepclraw.core.2.0.2.nupkg.sha512",
+    "/Users/Andres/.nuget/packages/sqlitepclraw.lib.e_sqlite3/2.0.2/sqlitepclraw.lib.e_sqlite3.2.0.2.nupkg.sha512",
+    "/Users/Andres/.nuget/packages/sqlitepclraw.provider.dynamic_cdecl/2.0.2/sqlitepclraw.provider.dynamic_cdecl.2.0.2.nupkg.sha512",
+    "/Users/Andres/.nuget/packages/system.memory/4.5.3/system.memory.4.5.3.nupkg.sha512"
+  ],
+  "logs": []
+}

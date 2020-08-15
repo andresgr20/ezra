@@ -48,21 +48,24 @@ namespace EzraTest.DB
         /// <inheritdoc />
         public void AddMember(Member member)
         {
-            // TODO
+            // adds the member to the table
+            // ExecuteQuery($"INSERT INTO MEMBERS(ID,NAME,EMAIL) VALUES('{member.Id}','{member.Name}','{member.Email}')");
             throw new NotImplementedException();
         }
 
         /// <inheritdoc />
         public void UpdateMember(Guid id, Member member)
         {
-            // TODO
+            // update all the member instead of checking all the info
+            // ExecuteQuery($"UPDATE MEMBERS SET NAME='{member.Name}', EMAIL='{member.Email}' WHERE ID='{id}'");
             throw new NotImplementedException();
         }
 
         /// <inheritdoc />
         public void DeleteMember(Guid id)
         {
-            // TODO
+            // Deletes the member based on the primary key
+            // ExecuteQuery($"DELETE FROM MEMBERS WHERE ID='{id}'");
             throw new NotImplementedException();
         }
 
