@@ -38,8 +38,17 @@ namespace EzraTest.Controllers
         [Route("add")]
         public void AddMember(Member member)
         {
-            member.Id = Guid.NewGuid();
-            _membersRepository.AddMember(member);
+            Response.StatusCode = 200;
+            try{
+                var addr = new System.Net.Mail.MailAddress(member.Email);
+                if(addr.Address == member.Email){
+                    member.Id = Guid.NewGuid();
+                    _membersRepository.AddMember(member);
+                }              
+            }catch{
+                // Not a valid email
+                Response.StatusCode = 930;
+            }
         }
 
         [HttpPost]
@@ -47,7 +56,16 @@ namespace EzraTest.Controllers
         public void UpdateMember(Guid id, Member member)
         {
             member.Id= id;
-            _membersRepository.UpdateMember(id, member);
+            Response.StatusCode = 200;
+            try{
+                var addr = new System.Net.Mail.MailAddress(member.Email);
+                if(addr.Address == member.Email){
+                    _membersRepository.UpdateMember(id, member);
+                }              
+            }catch{
+                // Not a valid email
+                Response.StatusCode = 930;
+            }
         }
 
         // TODO
@@ -56,15 +74,9 @@ namespace EzraTest.Controllers
         [Route("delete/{id}")]
         public void DeleteMember(Guid id)
         {
-            Console.WriteLine(id);
-            // string[] keys = Request.Form.AllKeys;
-            // for (int i= 0; i < keys.Length; i++) 
-            // {
-            //     Console.WriteLine(keys[i] + ": " + Request.Form[keys[i]]);
-            // }
+            Response.StatusCode = 200;
             _membersRepository.DeleteMember(id);
-
-            //send http back
         }
     }
+
 }

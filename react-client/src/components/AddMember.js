@@ -31,15 +31,14 @@ export default function AddMember(){
     <>
       <div>
         <h1>Add Member</h1>
-          <form>
+          <form className="form-group">
             <label htmlFor="fname">Name:</label>
             <br></br>
-            <input type="text" id="fname" name="fname" placeholder="Andrew Doxey" value={name} onChange={handleNameChange} required></input>
+            <input type="text" className="form-control" aria-describedby="memberName" value={name} name="fname" placeholder="Andrew Doxey" onChange={handleNameChange} required></input>
             <br></br>
             <label htmlFor="email">Email:</label>
             <br></br>
-            {/* <input id="email" type="text" class="form-control" name="email" placeholder="Email"></input> */}
-            <input type="email" id="email" name="email" placeholder="andydoxy@erin.com" value={email} onChange={handleEmailChange} required></input> 
+            <input type="email" className="form-control" aria-describedby="memberEmail"  value={email} name="email" placeholder="andydoxy@erin.com" onChange={handleEmailChange} required></input>
           </form>
 
         <button className="btn btn-primary" disabled={email.length <1 || name.length<1} onClick={addMember}>

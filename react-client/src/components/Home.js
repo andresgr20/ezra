@@ -7,7 +7,7 @@ export class Home extends Component {
 
   constructor(props) {
     super(props)
-    this.state = { members: [], loading: true, editing: false }
+    this.state = { members: [], loading: true, editing: false, delete: false}
     this.editMember = this.editMember.bind(this);
   }
 
@@ -15,11 +15,11 @@ export class Home extends Component {
     this.populateMembers()
   }
 
-  // componentDidUpdate(){
-  //   if(this.state.delete){
-  //     this.populateMembers();
-  //   }
-  // }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.delete !== this.state.delete) {
+      this.populateMembers();
+    }
+  }
 
   renderMembersTable(members) {
     return (
@@ -91,7 +91,7 @@ export class Home extends Component {
       return item;
     })
     this.setState(
-      { members: newState, loading: false,editing:true }
+      { members: newState, loading: false,editing:true, delete:false }
     );
   }
 
@@ -103,14 +103,14 @@ export class Home extends Component {
       return item;
     })
     this.setState(
-      { members: newState, loading: false,editing:true }
+      { members: newState, loading: false,editing:true, delete: false }
     );
   }
 
   async populateMembers() {
     const response = await fetch('http://localhost:5000/members')
     const data = await response.json()
-    this.setState({ members: data, loading: false , editing:false})
+    this.setState({ members: data, loading: false , editing:false, delete: false})
   }
 
   async deleteMember(index,memberId) {
@@ -123,7 +123,14 @@ export class Home extends Component {
     }).then(response => response.text())
     .then(data => console.log(data))    
     .catch(error => console.log("Error detected: " + error));
-    this.populateMembers();
+    this.setState(previousState => {
+      return{
+        members: previousState.members,
+        loading: previousState.loading,
+        editing: previousState.editing,
+        delete: !previousState.delete
+      };
+    });
   }
 
   async editMember(memberId,memberName, memberEmail) {
@@ -146,7 +153,8 @@ export class Home extends Component {
         return{
           members: previousState.members,
           loading: previousState.loading,
-          editing: !previousState.editing
+          editing: !previousState.editing,
+          delete: previousState.delete
         };
       });
   }
