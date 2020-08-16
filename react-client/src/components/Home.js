@@ -7,12 +7,19 @@ export class Home extends Component {
 
   constructor(props) {
     super(props)
-    this.state = { members: [], loading: true }
+    this.state = { members: [], loading: true, editing: false }
+    this.editMember = this.editMember.bind(this);
   }
 
   componentDidMount() {
     this.populateMembers()
   }
+
+  // componentDidUpdate(){
+  //   if(this.state.delete){
+  //     this.populateMembers();
+  //   }
+  // }
 
   renderMembersTable(members) {
     return (
@@ -26,21 +33,27 @@ export class Home extends Component {
           </tr>
         </thead>
         <tbody>
-          {members.map((member) => (
+          {members.map((member,index) => (
             <tr key={member.id}>
               <td>{member.id}</td>
-              <td>{member.name}</td>
-              <td>{member.email}</td>
+              <td>
+                {this.state.editing 
+                ? <input value={member.name} onChange={e => this.handleChange(index,e.target.value)}/>   
+                : member.name}</td>
+               <td>
+                {this.state.editing 
+                ? <input value={member.email} onChange={e => this.handleChangeEmail(index,e.target.value)}/>   
+                : member.email}</td>
               <td className="btn-group">
                 <button
                   className="img-btn btn-link"
-                  onClick={() => this.deleteMember(member.id)}
+                  onClick={() => this.deleteMember(index,member.id)}
                 >
                   <img src="/delete.svg" width="12px" height="12px" />
                 </button>
                 <button
                   className="img-btn btn-link"
-                  onClick={() => this.editMember(member.id)}
+                  onClick={() => this.editMember(member.id,member.name,member.email)}
                 >
                   <img src="/edit.svg" width="12px" height="12px" />
                 </button>
@@ -70,19 +83,71 @@ export class Home extends Component {
     )
   }
 
+  handleChangeEmail(index,value){
+    const newState = this.state.members.map((item,i) => {
+      if(i === index){
+        return {...item, email:value }
+      }
+      return item;
+    })
+    this.setState(
+      { members: newState, loading: false,editing:true }
+    );
+  }
+
+  handleChange(index,value){
+    const newState = this.state.members.map((item,i) => {
+      if(i === index){
+        return {...item, name:value }
+      }
+      return item;
+    })
+    this.setState(
+      { members: newState, loading: false,editing:true }
+    );
+  }
+
   async populateMembers() {
     const response = await fetch('http://localhost:5000/members')
     const data = await response.json()
-    this.setState({ members: data, loading: false })
+    this.setState({ members: data, loading: false , editing:false})
   }
 
-  async deleteMember(memberId) {
-    // TODO
-    throw 'Implement me'
+  async deleteMember(index,memberId) {
+    fetch(`http://localhost:5000/members/delete/${memberId}`, {
+      method: "POST",
+      headers:{
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify({'id':memberId})
+    }).then(response => response.text())
+    .then(data => console.log(data))    
+    .catch(error => console.log("Error detected: " + error));
+    this.populateMembers();
   }
 
-  async editMember(memberId) {
-    // TODO
-    throw 'Implement me'
+  async editMember(memberId,memberName, memberEmail) {
+    if(this.state.editing){
+      fetch(`http://localhost:5000/members/edit/${memberId}`, {
+        method: 'POST',
+        headers:{
+          'Content-Type':'application/json'
+        },
+        body:JSON.stringify({
+          'id':memberId,
+          'Name':memberName,
+          'Email':memberEmail
+      })
+      }).then(response => response.text())
+      .then(data => console.log(data))    
+      .catch(error => console.log("Error detected: " + error));
+    }
+      this.setState(previousState => {
+        return{
+          members: previousState.members,
+          loading: previousState.loading,
+          editing: !previousState.editing
+        };
+      });
   }
 }

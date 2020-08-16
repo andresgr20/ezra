@@ -48,25 +48,43 @@ namespace EzraTest.DB
         /// <inheritdoc />
         public void AddMember(Member member)
         {
-            // adds the member to the table
-            // ExecuteQuery($"INSERT INTO MEMBERS(ID,NAME,EMAIL) VALUES('{member.Id}','{member.Name}','{member.Email}')");
-            throw new NotImplementedException();
+            ExecuteQuery($"INSERT INTO MEMBERS(ID,NAME,EMAIL) VALUES('{member.Id:N}','{member.Name}','{member.Email}')", (reader) =>
+            {
+                return new Member
+                {
+                    Id = Guid.Parse(reader.GetString(0)),
+                    Name = reader.GetString(1),
+                    Email = reader.GetString(2)
+                };
+            }).FirstOrDefault();
         }
 
         /// <inheritdoc />
         public void UpdateMember(Guid id, Member member)
         {
             // update all the member instead of checking all the info
-            // ExecuteQuery($"UPDATE MEMBERS SET NAME='{member.Name}', EMAIL='{member.Email}' WHERE ID='{id}'");
-            throw new NotImplementedException();
+            ExecuteQuery($"UPDATE MEMBERS SET NAME='{member.Name}', EMAIL='{member.Email}' WHERE ID='{id:N}';",(reader) => {
+                return new Member
+                {
+                    Id = Guid.Parse(reader.GetString(0)),
+                    Name = reader.GetString(1),
+                    Email = reader.GetString(2)
+                };
+            }).FirstOrDefault();
         }
 
         /// <inheritdoc />
         public void DeleteMember(Guid id)
         {
             // Deletes the member based on the primary key
-            // ExecuteQuery($"DELETE FROM MEMBERS WHERE ID='{id}'");
-            throw new NotImplementedException();
+            ExecuteQuery($"DELETE FROM MEMBERS WHERE ID='{id:N}';",(reader) => {
+                return new Member
+                {
+                    Id = Guid.Parse(reader.GetString(0)),
+                    Name = reader.GetString(1),
+                    Email = reader.GetString(2)
+                };
+            }).FirstOrDefault();
         }
 
         private IEnumerable<T> ExecuteQuery<T>(string commandText, Func<SqliteDataReader, T> func)
